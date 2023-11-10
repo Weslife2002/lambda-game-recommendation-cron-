@@ -91,11 +91,14 @@ if __name__ == "__main__":
   try:
     GameRecommendation.init_game_recommend_table()
     game_recommedation_utils.clear_recommendation_table()
+  
     user_ids = user_utils.get_sorted_user_ids()
     # user_ids = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 23, 24, 25, 26, 27, 28, 29, 30]
+  
     print("user_ids: ", user_ids)
     sorted_game_ids = game_utils.get_sorted_game_ids()
     # sorted_game_ids = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 , 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27]
+    
     print("sorted_game_ids: ", sorted_game_ids)
     user_purchased_game_records = game_utils.get_user_purchased_game()
     # user_purchased_game_records = [
@@ -107,10 +110,16 @@ if __name__ == "__main__":
     #   (29, 1), (29, 2), (29, 3), (29, 4), (29, 7), 
     #   (30, 3), (30, 4)
     # ]
+  
     print("user_purchased_game_records: ", user_purchased_game_records)
     set_of_game_ids = convert_purchased_record_to_set_of_game_ids(user_purchased_game_records)
     # set_of_game_ids = [[1], [1, 2, 4, 5, 8, 10, 11, 12, 15, 24], [4, 5, 8, 10], [1], [1, 2, 3], [1, 2, 3, 4, 7], [3, 4]]
+    
+    print("")
+    print("")
     print("set_of_game_ids: ", set_of_game_ids)
+    print("")
+    print("")
     game_matrix = create_game_matrix(set_of_game_ids, sorted_game_ids)
     print("game_matrix: ", game_matrix)
     most_popular_games = rank_most_popular_games(set_of_game_ids)
