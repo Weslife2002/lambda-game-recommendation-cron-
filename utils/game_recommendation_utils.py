@@ -8,17 +8,12 @@ def clear_recommendation_table():
   return list(map(lambda x: x[0], rows))
 
 def add_records(game_recommendation_records):
-  values = ""
-  for _ in range(len(game_recommendation_records)):
-    record = game_recommendation_records[_]
-    values += f"({record[0]}, {record[1]}, {record[2]}),"
+  values = ", ".join(list(map(lambda record: f"({record[0]}, {record[1]}, {record[2]})" , game_recommendation_records)))
   insertCommand = f"""
-  INSERT INTO game_recommendation ()
+  INSERT INTO game_recommendation (userId, gameId, point)
   VALUES
-  {values}
+  {values};
   """
   # cursor = conn.cursor()
+  # cursor.execute(insertCommand)
   print (insertCommand)
-  
-    
-  print(game_recommendation_records)
