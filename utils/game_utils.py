@@ -1,9 +1,9 @@
 import models.connection
 from models.connection import conn
 
-def get_game_ids():
+def get_sorted_game_ids():
   cursor = conn.cursor()
-  cursor.execute('SELECT id FROM game')
+  cursor.execute('SELECT id FROM game ORDER BY id')
   rows = cursor.fetchall()
   return list(map(lambda x: x[0], rows))
 
