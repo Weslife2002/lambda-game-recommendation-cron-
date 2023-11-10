@@ -1,14 +1,13 @@
-import connection
-from connection import conn
+import models.connection
+from models.connection import conn
 
-def init_game_recommend_database:
+def init_game_recommend_table():
   cursor = conn.cursor()
   cursor.execute(
     """ CREATE TABLE IF NOT EXISTS game_recommedation (
     userId INTEGER NOT NULL,
     gameId INTEGER NOT NULL,
-    relevant_point INTERGER,
-    common_point INTERGER,
+    point INTERGER,
     )"""
   )
   cursor.close()

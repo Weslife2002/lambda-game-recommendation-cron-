@@ -3,6 +3,8 @@ from models.connection import conn
 
 import utils.user_utils as user_utils
 import utils.game_utils as game_utils
+import utils.game_recommendation_utils as game_recommedation_utils
+import models.GameRecommendation as GameRecommendation
 
 def convert_purchased_record_to_set_of_game_ids(user_purchased_game_records):
   set_of_game_ids = []
@@ -72,13 +74,24 @@ def rank_most_popular_games(set_of_game_ids):
 
   return list(map(lambda x: x[0], set_game_id_and_count))
 
-def create_recommed_games(game_matrix, user_vector, most_popular_games):
-  return []
+def create_recommed_games(game_matrix, user_vector):
+  game_id_with_game_point = []
+  for index in range(len(game_matrix)):
+    game_id = index + 1
+    game_recommend_vector = []
+    for _ in range(len(game_matrix)):
+      game_recommend_vector.append(game_matrix[_][index])
+    point = 0
+    for _ in range(len(user_vector)):
+      point += user_vector[_] * game_recommend_vector[_]
+    game_id_with_game_point.append([game_id, point])
+  return game_id_with_game_point
 
 if __name__ == "__main__":
   try:
-    # user_ids = user_utils.get_user_ids()
-    user_ids = [29, 2, 16, 14, 9, 3, 30, 18, 4, 26, 28, 23, 24, 25, 27, 7, 1, 15, 21, 12, 11, 20, 5, 19, 8, 17, 6, 10, 13]
+    # GameRecommendation.init_game_recommend_table()
+    # user_ids = user_utils.get_sorted_user_ids()
+    user_ids = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 23, 24, 25, 26, 27, 28, 29, 30]
     print("user_ids: ", user_ids)
     # sorted_game_ids = game_utils.get_sorted_game_ids()
     sorted_game_ids = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 , 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27]
@@ -101,13 +114,23 @@ if __name__ == "__main__":
     print("game_matrix: ", game_matrix)
     most_popular_games = rank_most_popular_games(set_of_game_ids)
     print("most_popular_games: ", most_popular_games)
-    for i in range(len(user_ids)):
+
+    game_recommendation_records = []
+    # for i in range(len(user_ids)):
+    for i in range(1):
       user_id = user_ids[i]
       user_vector = map_user_to_vector_of_game_id(user_id, user_purchased_game_records, len(sorted_game_ids))
       print("user ", user_id, " has vector: ", user_vector)
+      list_of_recommend_game_with_point = list(filter(lambda x: x[1] != 0, create_recommed_games(game_matrix, user_vector)))
+      print("user ", user_id, " has recommend game with point: ", list_of_recommend_game_with_point)
+      if (len(list_of_recommend_game_with_point)):
+        user_id_game_id_point = list(map(lambda x: [user_id, x[0], x[1]], list_of_recommend_game_with_point))
+        for _ in range(len(user_id_game_id_point)):
+          game_recommendation_records.append(user_id_game_id_point[_])
+
+    game_recommedation_utils.add_records(game_recommendation_records)
   except Exception as e:
-    # print(str(e))
-    print("Error")
+    print(str(e))
   finally:
     conn.close()
     print("End")
