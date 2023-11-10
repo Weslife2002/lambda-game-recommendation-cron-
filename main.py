@@ -122,8 +122,13 @@ if __name__ == "__main__":
     print("")
     game_matrix = create_game_matrix(set_of_game_ids, sorted_game_ids)
     print("game_matrix: ", game_matrix)
+    
+    print("")
+    print("")
     most_popular_games = rank_most_popular_games(set_of_game_ids)
     print("most_popular_games: ", most_popular_games)
+    print("")
+    print("")
 
     game_recommendation_records = []
     for i in range(len(user_ids)):
